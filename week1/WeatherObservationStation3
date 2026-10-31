@@ -1,0 +1,23 @@
+select distinct(city) from station
+where id % 2 = 0
+
+Aguanga 
+Alba 
+Albany 
+Amo 
+Andersonville 
+Archie 
+Athens 
+Atlantic Mine 
+Bainbridge 
+Baker 
+Bass Harbor 
+Bayville 
+Beaufort 
+Bellevue 
+Benedict 
+Bennington 
+Bentonville 
+Biggsville 
+Bison 
+Bono {-truncated-}

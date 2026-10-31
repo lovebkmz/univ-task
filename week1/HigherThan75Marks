@@ -1,0 +1,21 @@
+select Name from students
+where Marks > 75 
+order by Substring(Name, -3), ID
+
+Stuart 
+Kristeen 
+Christene 
+Amina 
+Aamina 
+Priya 
+Heraldo 
+Scarlet 
+Julia 
+Salma 
+Britney 
+Priyanka 
+Samantha 
+Vivek 
+Belvet 
+Devil 
+Evil

@@ -1,0 +1,24 @@
+select name from employee
+order by name
+
+
+Alan 
+Amy 
+Andrew 
+Andrew 
+Angela 
+Ann 
+Anna 
+Anthony 
+Antonio 
+Benjamin 
+Bonnie 
+Brandon 
+Brandon 
+Brian 
+Carol 
+Charles 
+Christina 
+Christina 
+Christine 
+Christine {-truncated-}

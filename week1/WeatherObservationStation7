@@ -1,0 +1,17 @@
+select distinct(City) from station
+where city REGEXP '[aeiou]$'
+
+Amo 
+Andersonville 
+Archie 
+Arispe 
+Arkadelphia 
+Atlantic Mine 
+Baileyville 
+Bainbridge 
+Barrigada 
+Baton Rouge 
+Bayville 
+Bellevue 
+Bentonville 
+Bertha {-truncated-}

@@ -1,0 +1,6 @@
+(select City, CHAR_LENGTH(city) from station order by CHAR_LENGTH(city) ASC, City ASC limit 1 )
+union all
+(select city, CHAR_LENGTH(city) from station order by CHAR_LENGTH(city) DESC, City DESC limit 1 )
+
+Amo 3
+Marine On Saint Croix 21

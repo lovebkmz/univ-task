@@ -1,0 +1,9 @@
+SELECT Name from City 
+where COUNTRYCODE = "JPN"
+
+
+Neyagawa
+Ageo
+Sayama
+Omuta
+Tokuyama
