@@ -1,0 +1,53 @@
+/*
+Enter your query here.
+*/
+WITH daily AS (
+    SELECT submission_date, hacker_id, COUNT(*) AS cnt
+    FROM Submissions
+    GROUP BY submission_date, hacker_id
+),
+top_hacker AS (
+    SELECT submission_date, hacker_id,
+           ROW_NUMBER() OVER (PARTITION BY submission_date
+                              ORDER BY cnt DESC, hacker_id) AS rn
+    FROM daily
+),
+streak AS (
+    SELECT submission_date, hacker_id,
+           DENSE_RANK() OVER (PARTITION BY hacker_id
+                              ORDER BY submission_date) AS day_num
+    FROM daily
+),
+unique_cnt AS (
+    SELECT submission_date, COUNT(*) AS total
+    FROM streak
+    WHERE day_num = DATEDIFF(submission_date, '2016-03-01') + 1
+    GROUP BY submission_date
+)
+SELECT t.submission_date,
+       COALESCE(u.total, 0),
+       t.hacker_id,
+       h.name
+FROM top_hacker t
+JOIN Hackers h ON h.hacker_id = t.hacker_id
+LEFT JOIN unique_cnt u ON u.submission_date = t.submission_date
+WHERE t.rn = 1
+ORDER BY t.submission_date;
+
+
+
+2016-03-01 112 81314 Denise 
+2016-03-02 59 39091 Ruby 
+2016-03-03 51 18105 Roy 
+2016-03-04 49 533 Patrick 
+2016-03-05 49 7891 Stephanie 
+2016-03-06 49 84307 Evelyn 
+2016-03-07 35 80682 Deborah 
+2016-03-08 35 10985 Timothy 
+2016-03-09 35 31221 Susan 
+2016-03-10 35 43192 Bobby 
+2016-03-11 35 3178 Melissa 
+2016-03-12 35 54967 Kenneth 
+2016-03-13 35 30061 Julia 
+2016-03-14 35 32353 Rose 
+2016-03-15 35 27789 Helen 
