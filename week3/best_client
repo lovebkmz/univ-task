@@ -1,0 +1,33 @@
+WITH rev AS (
+  SELECT c.city, c.customer_id, c.full_name,
+         sum(oi.qty * oi.price) AS revenue
+  FROM shop.customers c
+  JOIN shop.orders o       USING (customer_id)
+  JOIN shop.order_items oi USING (order_id)
+  WHERE o.status <> 'cancelled'
+  GROUP BY c.city, c.customer_id, c.full_name
+),
+ranked AS (
+  SELECT *,
+    RANK() OVER (PARTITION BY city ORDER BY revenue DESC) AS rnk,
+    sum(revenue) OVER (PARTITION BY city)                 AS city_total,
+    LEAD(revenue) OVER (PARTITION BY city ORDER BY revenue DESC) AS next_revenue
+  FROM rev
+)
+SELECT city, full_name, revenue,
+       round(100.0 * revenue / city_total, 2) AS share_pct,
+       revenue - next_revenue                 AS gap_to_second
+FROM ranked
+WHERE rnk = 1
+ORDER BY revenue DESC;
+
+
+
+    city     | full_name  |   revenue    | share_pct | gap_to_second 
+-------------+------------+--------------+-----------+---------------
+ Джалал-Абад | Клиент 1   | 125887019.83 |      3.45 |   88479823.10
+ Бишкек      | Клиент 168 |  40633040.61 |      0.39 |    1590691.49
+ Нарын       | Клиент 511 |  39540774.04 |      1.11 |     747502.08
+ Токмок      | Клиент 574 |  38976264.15 |      1.09 |    1053606.01
+ Каракол     | Клиент 408 |  38329702.40 |      1.03 |     882036.68
+ Ош          | Клиент 902 |  37914679.90 |      0.59 |     598162.90

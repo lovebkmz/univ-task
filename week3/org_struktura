@@ -1,0 +1,28 @@
+CREATE TABLE shop.employees (
+  employee_id int PRIMARY KEY,
+  full_name   text NOT NULL,
+  manager_id  int REFERENCES shop.employees
+);
+
+
+With Recursive tree as (
+Select employee_id, full_name, 1 as level, full_name as path
+From shop.employees where manager_id is null
+
+Union all
+
+Select e.employee_id, e.full_name, level + 1, concat(t.path, ' → ', e.full_name)
+From shop.employees e
+Join tree t on t.employee_id = e.manager_id
+)
+SELECT level, full_name, path FROM tree
+
+
+ level | full_name |         path          
+-------+-----------+-----------------------
+     1 | Ilia      | Ilia
+     2 | Нурия     | Ilia → Нурия
+     2 | Тимур     | Ilia → Тимур
+     3 | Асель     | Ilia → Нурия → Асель
+     3 | Бекзат    | Ilia → Нурия → Бекзат
+     3 | Данияр    | Ilia → Тимур → Данияр
